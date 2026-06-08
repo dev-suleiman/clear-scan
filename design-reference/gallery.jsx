@@ -1,0 +1,222 @@
+/* ClearScan — gallery screens (splash, onboarding, permissions, states, dialogs, notifications) */
+
+function PhoneCard({ children, dark, bg }) {
+  return (
+    <IOSDevice width={390} height={844} dark={dark}>
+      <div style={{ height: '100%', background: bg || T.appBg, position: 'relative', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        {children}
+      </div>
+    </IOSDevice>
+  );
+}
+
+// simple back app bar (static, gallery)
+function GBar({ title, dark, trailing, leadingless }) {
+  const fg = dark ? '#fff' : T.text;
+  return (
+    <div style={{ flexShrink: 0, paddingTop: STATUS_INSET, background: dark ? 'transparent' : '#fff', borderBottom: dark ? 'none' : `1px solid ${T.border}` }}>
+      <div style={{ height: 52, display: 'flex', alignItems: 'center', padding: '0 12px' }}>
+        {!leadingless && <div style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="arrow_back" size={24} color={fg} fill={0} /></div>}
+        <div style={{ flex: 1, textAlign: 'center', fontSize: 18, fontWeight: 600, color: fg }}>{title}</div>
+        <div style={{ minWidth: 40, display: 'flex', justifyContent: 'flex-end' }}>{trailing}</div>
+      </div>
+    </div>
+  );
+}
+
+// ── Splash (Screen 1) ───────────────────────────────────────
+function SplashScreen() {
+  return (
+    <PhoneCard bg="#fff">
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 18 }}>
+        <Logo size={72} />
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 28, fontWeight: 700, color: T.blue, letterSpacing: 0.3 }}>ClearScan</div>
+          <div style={{ fontSize: 14, color: T.text2, marginTop: 4 }}>Chest X-Ray Quality AI</div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', paddingBottom: 54 }}>
+        <div style={{ width: 240, height: 3, borderRadius: 100, background: '#E3F2FD', overflow: 'hidden' }}>
+          <div style={{ width: '64%', height: '100%', borderRadius: 100, background: T.accent }} />
+        </div>
+      </div>
+    </PhoneCard>
+  );
+}
+
+// ── Onboarding dots ─────────────────────────────────────────
+function Dots({ active }) {
+  return (
+    <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
+      {[0, 1, 2].map(i => (
+        <div key={i} style={{ width: i === active ? 24 : 8, height: 8, borderRadius: 100, background: i === active ? T.blue : '#CBD5E1', transition: 'width 200ms' }} />
+      ))}
+    </div>
+  );
+}
+
+function ScanLines() {
+  return (
+    <React.Fragment>
+      {[28, 50, 72].map((t, i) => (
+        <div key={i} style={{ position: 'absolute', left: '8%', right: '8%', top: `${t}%`, height: 2, background: 'rgba(255,255,255,0.55)', boxShadow: '0 0 8px rgba(255,255,255,0.5)' }} />
+      ))}
+    </React.Fragment>
+  );
+}
+
+function OnbSlide1() {
+  return (
+    <PhoneCard bg="#F8FAFB">
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '60%', background: 'linear-gradient(180deg, #1565C0 0%, #2D7DD2 55%, #F8FAFB 100%)' }} />
+      <div style={{ position: 'relative', paddingTop: STATUS_INSET + 16, display: 'flex', justifyContent: 'center' }}><Dots active={0} /></div>
+      <div style={{ position: 'relative', height: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'relative', width: 210, height: 250, background: '#fff', borderRadius: 16, padding: 8, boxShadow: '0 18px 40px rgba(0,0,0,0.28)' }}>
+          <XRay variant="good" style={{ width: '100%', height: '100%', borderRadius: 10 }}>
+            <ScanLines />
+            <span style={{ position: 'absolute', top: 8, right: 8, background: T.good, color: '#fff', fontSize: 10, fontWeight: 700, borderRadius: 8, padding: '3px 7px' }}>GOOD</span>
+          </XRay>
+        </div>
+      </div>
+      <div style={{ position: 'relative', flex: 1, padding: '8px 28px 0', textAlign: 'center' }}>
+        <div style={{ fontSize: 22, fontWeight: 600, color: T.text }}>Know Before You Read</div>
+        <div style={{ fontSize: 15, color: T.text2, lineHeight: 1.55, marginTop: 10 }}>ClearScan instantly analyses your chest X-ray images for sharpness, contrast, noise, and exposure — so you never miss a quality issue.</div>
+      </div>
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px 46px' }}>
+        <span style={{ fontSize: 14, fontWeight: 600, color: T.text2 }}>Skip</span>
+        <button style={{ display: 'flex', alignItems: 'center', gap: 6, background: T.blue, color: '#fff', borderRadius: 100, padding: '12px 22px', fontSize: 15, fontWeight: 600, boxShadow: T.shadowBtn }}>Next <Icon name="arrow_forward" size={18} color="#fff" /></button>
+      </div>
+    </PhoneCard>
+  );
+}
+
+function OnbSlide2() {
+  const phone = (icon, color, label, dotColor, variant) => (
+    <div style={{ width: 116, border: `2px solid ${T.border}`, borderRadius: 18, padding: 10, background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+      <XRay variant={variant} style={{ width: '100%', height: 90, borderRadius: 8 }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+        <Icon name={icon} size={18} color={color} />
+        <span style={{ width: 7, height: 7, borderRadius: 4, background: dotColor }} />
+      </div>
+      <span style={{ fontSize: 10.5, fontWeight: 600, color: T.text2, textAlign: 'center', lineHeight: 1.3 }}>{label}</span>
+    </div>
+  );
+  return (
+    <PhoneCard bg="#fff">
+      <div style={{ paddingTop: STATUS_INSET + 16, display: 'flex', justifyContent: 'center' }}><Dots active={1} /></div>
+      <div style={{ height: 320, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+        {phone('wifi', T.good, 'Online — CNN Mode', T.good, 'good')}
+        <Icon name="sync_alt" size={22} color={T.text2} />
+        {phone('wifi_off', T.fair, 'Offline — CLAHE Mode', T.fair, 'enhanced')}
+      </div>
+      <div style={{ flex: 1, padding: '8px 28px 0', textAlign: 'center' }}>
+        <div style={{ fontSize: 22, fontWeight: 600, color: T.text }}>Works Anywhere</div>
+        <div style={{ fontSize: 15, color: T.text2, lineHeight: 1.55, marginTop: 10 }}>Full AI-powered CNN analysis when connected. Automatic CLAHE enhancement and on-device quality assessment when offline. No internet? No problem.</div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px 46px' }}>
+        <span style={{ fontSize: 14, fontWeight: 600, color: T.text2 }}>Skip</span>
+        <button style={{ display: 'flex', alignItems: 'center', gap: 6, background: T.blue, color: '#fff', borderRadius: 100, padding: '12px 22px', fontSize: 15, fontWeight: 600, boxShadow: T.shadowBtn }}>Next <Icon name="arrow_forward" size={18} color="#fff" /></button>
+      </div>
+    </PhoneCard>
+  );
+}
+
+function OnbSlide3() {
+  return (
+    <PhoneCard bg="#fff">
+      <div style={{ paddingTop: STATUS_INSET + 16, display: 'flex', justifyContent: 'center' }}><Dots active={2} /></div>
+      <div style={{ height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'relative', width: 230, height: 230, borderRadius: 16, overflow: 'hidden' }}>
+          <XRay variant="enhanced" style={{ position: 'absolute', inset: 0 }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '50%', overflow: 'hidden' }}>
+            <XRay variant="poor" style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: 230 }} />
+          </div>
+          <span style={{ position: 'absolute', top: 10, left: 10, background: T.poor, color: '#fff', fontSize: 10, fontWeight: 700, borderRadius: 7, padding: '3px 7px' }}>POOR</span>
+          <span style={{ position: 'absolute', top: 10, right: 10, background: T.good, color: '#fff', fontSize: 10, fontWeight: 700, borderRadius: 7, padding: '3px 7px' }}>GOOD</span>
+          <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 3, background: '#fff', transform: 'translateX(-1.5px)' }}>
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 34, height: 34, borderRadius: '50%', background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Icon name="swap_horiz" size={18} color={T.blue} />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 4 }}>
+        <MetaChip icon="picture_as_pdf">PDF Report</MetaChip>
+        <MetaChip icon="image">Save to Gallery</MetaChip>
+      </div>
+      <div style={{ flex: 1, padding: '14px 28px 0', textAlign: 'center' }}>
+        <div style={{ fontSize: 22, fontWeight: 600, color: T.text }}>Enhance &amp; Report</div>
+        <div style={{ fontSize: 15, color: T.text2, lineHeight: 1.55, marginTop: 10 }}>Improve degraded images with our hybrid pipeline, compare enhancement methods, and export professional PDF reports for clinical records.</div>
+      </div>
+      <div style={{ padding: '0 24px 46px' }}>
+        <PrimaryBtn>Get Started</PrimaryBtn>
+      </div>
+    </PhoneCard>
+  );
+}
+
+// ── Permission screens (Screen 19) ──────────────────────────
+function PermissionScreen({ icon, title, body }) {
+  return (
+    <PhoneCard bg="#fff">
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 32px', textAlign: 'center' }}>
+        <div style={{ width: 128, height: 128, borderRadius: 32, background: T.surfaceBlue, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28 }}>
+          <Icon name={icon} size={64} color={T.blue} />
+        </div>
+        <div style={{ fontSize: 22, fontWeight: 700, color: T.text }}>{title}</div>
+        <div style={{ fontSize: 15, color: T.text2, lineHeight: 1.55, marginTop: 12 }}>{body}</div>
+      </div>
+      <div style={{ padding: '0 24px 20px' }}>
+        <PrimaryBtn>{icon === 'camera_alt' ? 'Allow Camera Access' : 'Allow Photo Access'}</PrimaryBtn>
+        <TextBtn style={{ width: '100%', textAlign: 'center', marginTop: 6 }}>Not Now</TextBtn>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, marginTop: 14, padding: '12px', background: '#F8FAFB', borderRadius: 12 }}>
+          <Icon name="lock" size={16} color={T.text2} fill={0} />
+          <span style={{ fontSize: 11.5, color: T.text2 }}>Your data is private and stored only on your device</span>
+        </div>
+      </div>
+      <div style={{ height: 28 }} />
+    </PhoneCard>
+  );
+}
+
+// ── Empty / error states (Screen 22) ────────────────────────
+function StateScreen({ title, barTitle, icon, iconColor, heading, body, primary, secondary }) {
+  return (
+    <PhoneCard bg={T.appBg}>
+      <GBar title={barTitle} />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 36px', textAlign: 'center' }}>
+        <Icon name={icon} size={84} color={iconColor || '#D1D5DB'} fill={iconColor ? 1 : 0} />
+        <div style={{ fontSize: 19, fontWeight: 600, color: T.text, marginTop: 16 }}>{heading}</div>
+        <div style={{ fontSize: 15, color: T.text2, lineHeight: 1.55, marginTop: 8 }}>{body}</div>
+        <div style={{ width: '100%', marginTop: 26 }}>
+          <PrimaryBtn>{primary}</PrimaryBtn>
+          {secondary && <TextBtn style={{ width: '100%', textAlign: 'center', marginTop: 8 }} color={T.text2}>{secondary}</TextBtn>}
+        </div>
+      </div>
+    </PhoneCard>
+  );
+}
+
+// ── Dialog cards (Screen 20) ────────────────────────────────
+function DialogCard({ title, body, confirm, cancel, behind }) {
+  return (
+    <PhoneCard bg={T.appBg}>
+      <div style={{ position: 'absolute', inset: 0, opacity: 0.5 }}>{behind}</div>
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.40)' }} />
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 36 }}>
+        <div style={{ background: '#fff', borderRadius: 20, padding: '26px 22px', width: '100%', textAlign: 'center' }}>
+          <div style={{ fontSize: 18, fontWeight: 600, color: T.text }}>{title}</div>
+          <div style={{ fontSize: 14, color: T.text2, lineHeight: 1.5, margin: '10px 0 22px' }}>{body}</div>
+          <PrimaryBtn style={{ background: T.poor, boxShadow: 'none', height: 48 }}>{confirm}</PrimaryBtn>
+          <div style={{ height: 10 }} />
+          <OutlineBtn style={{ height: 48 }}>{cancel}</OutlineBtn>
+        </div>
+      </div>
+    </PhoneCard>
+  );
+}
+
+Object.assign(window, {
+  PhoneCard, GBar, SplashScreen, Dots, OnbSlide1, OnbSlide2, OnbSlide3,
+  PermissionScreen, StateScreen, DialogCard,
+});

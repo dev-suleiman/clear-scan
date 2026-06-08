@@ -1,0 +1,7 @@
+clean_path,degraded_path,degradation_type,severity
+data\synthetic_pairs\clean\test_001.png,data\synthetic_pairs\degraded\test_001_deg_0.png,underexposure,0.643
+data\synthetic_pairs\clean\test_001.png,data\synthetic_pairs\degraded\test_001_deg_1.png,poisson_noise,1.0
+data\synthetic_pairs\clean\test_002.png,data\synthetic_pairs\degraded\test_002_deg_0.png,poisson_noise,1.0
+data\synthetic_pairs\clean\test_002.png,data\synthetic_pairs\degraded\test_002_deg_1.png,contrast_compression,0.3125
+data\synthetic_pairs\clean\test_003.png,data\synthetic_pairs\degraded\test_003_deg_0.png,gaussian_blur,1.9912
+data\synthetic_pairs\clean\test_003.png,data\synthetic_pairs\degraded\test_003_deg_1.png,poisson_noise,1.0
