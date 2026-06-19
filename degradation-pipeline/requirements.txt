@@ -1,0 +1,7 @@
+# Python 3.13 compatible versions (pinned versions in the spec were built for Python <=3.12)
+opencv-python==4.10.0.84
+numpy==2.2.6
+scikit-image==0.25.2
+Pillow==10.4.0
+tqdm==4.66.2
+pandas==2.2.3
