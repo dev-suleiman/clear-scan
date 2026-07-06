@@ -1,2 +1,0 @@
-degraded_path,orig_ssim,clahe_ssim,cnn_ssim,orig_psnr,clahe_psnr,cnn_psnr,orig_brisque,clahe_brisque,cnn_brisque,winner
-data\synthetic_pairs\degraded\test_003_deg_1.png,0.9885,0.8791,0.026,27.38,15.13,10.91,,,,CLAHE

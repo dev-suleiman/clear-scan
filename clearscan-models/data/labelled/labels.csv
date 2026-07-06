@@ -1,4 +1,316 @@
-filename,quality_label,defects
-test_001.png,Fair,
-test_002.png,Fair,
-test_003.png,Good,
+﻿Index,Name,Label,Note
+1,00001336_000,Good, 
+2,00001337_000,Good, 
+3,00001338_000,Good,
+4,00001338_001,Poor,Too bright
+5,00001338_002,Fair,Edge too tight
+6,00001338_003,Fair,Slightly bright 
+7,00001339_000,Good,
+8,00001340_000,Fair,Slightly bright
+9,00001341_000,Fair,Slightly dark
+10,00001342_000,Fair,Slightly bright
+11,00001342_001,Fair,slightly bright
+12,00001343_000,Fair,Patient slightly rotated. 
+13,00001344_000,Poor,Too bright
+14,00001345_000,Fair,Slightly bright
+16,00001347_000,Good,
+17,00001347_001,Fair,Slightly bright
+18,00001347_002,Good,
+19,00001348_000,Good,
+20,00001349_000,Poor,Too bright
+21,00001350_000,Fair,Slightly bright
+22,00001351_000,Fair,Patient slightly rotated. 
+23,00001352_000,Good,
+24,00001353_000,Fair,Slightly bright
+25,00001354_000,Good,
+26,00001355_000,Fair,Patient slightly rotated. 
+27,00001355_001,Poor,Slightly bright + patient rotated
+28,00001355_002,Poor,Slightly bright + patient rotated
+29,00001355_003,Good,
+30,00001355_004,Poor,Slightly bright + patient rotated
+31,00001355_005,Fair,Patient slightly rotated. 
+32,00001355_006,Fair,Patient slightly rotated. 
+33,00001355_007,Good,
+34,00001355_008,Good,
+35,00001355_009,Good,
+36,00001355_010,Fair,Patient slightly rotated. 
+37,00001355_011,Good,
+38,00001355_012,Good,
+39,00001356_000,Good,
+40,00001357_000,Poor,Slightly bright + patient rotated + some part cut off
+41,00001358_000,Good,
+42,00001358_001,Good,
+43,00001359_000,Fair,Patient slightly rotated. 
+44,00001360_000,Poor,Patient slightly rotated + slightly dark 
+45,00001361_000,Fair,Edge too tight
+46,00001362_000,Fair,Slightly bright
+47,00001362_001,Poor,Too bright
+48,00001362_002,Poor,Too bright
+49,00001362_003,Fair,Slightly bright
+50,00001362_004,Poor,Too bright
+51,00001362_005,Poor,Too bright
+52,00001362_006,Poor,Too bright +  Edges too tight. 
+53,00001362_007,Poor,Too bright +  Edges too tight. 
+54,00001362_008,Fair,Slightly bright
+55,00001362_009,Fair,Patient slightly rotated
+56,00001362_010,Fair,Patient slightly rotated
+57,00001362_011,Poor,Patient rotated + Too bright
+58,00001362_012,Fair,Slightly bright
+59,00001362_013,Fair,Patient slightly rotated
+60,00001362_014,Poor,Patient rotated + too bright
+61,00001362_015,Fair,slightly rotated 
+62,00001362_016,Fair,slightly rotated 
+63,00001362_017,Poor,Too bright 
+64,00001363_000,Good,
+65,00001364_000,Good,
+66,00001364_001,Good,
+67,00001364_002,Fair,Some parts cut off
+68,00001364_003,Fair,Edge too tight
+69,00001364_004,Good,
+70,00001364_005,Fair,Slightly bright
+71,00001364_006,Fair,Slightly bright 
+72,00001365_000,Fair,Left shoulder not in sight
+73,00001365_001,Good,
+74,00001365_002,Fair,Left shoulder not in sight
+75,00001366_000,Fair,Both shoulders not captured. 
+76,00001367_000,Fair,Patient rotated.
+77,00001367_001,Good,
+78,00001367_002,Fair,Patient rotated
+79,00001367_003,Fair,Patient rotated
+80,00001367_004,Fair,Slightly bright
+81,00001367_005,Good,
+82,00001367_006,Fair,Slightly bright
+83,00001367_007,Good,
+84,00001367_008,Good,
+85,00001367_009,Fair,Patient rotated
+86,00001367_010,Good,
+87,00001368_000,Good,
+88,00001368_001,Good,
+89,00001369_000,Fair,Slightly bright
+90,00001370_000,Fair,Edge too tight
+91,00001371_000,Fair,both shoulders not fully shown
+92,00001371_001,Poor,Too bright 
+93,00001371_002,Poor,Edge too tight + Too bright
+94,00001371_003,Poor,Too bright
+95,00001371_004,Poor,"Slightly bright, edges too tight, patient rotated"
+96,00001371_005,Good,
+97,00001372_000,Good,
+98,00001373_000,Poor,"Too bright, patient rotated"
+99,00001373_001,Poor,"Patient rotated, small part of the lung cut off"
+100,00001373_002,Fair,Patient slightly rotated.
+101,00001373_003,Fair,Patient slightly rotated.
+102,00001373_004,Good,
+103,00001373_005,Good,
+104,00001373_006,Good,
+105,00001373_007,Good,
+106,00001373_008,Fair,Slightly bright
+107,00001373_009,Poor,Too bright + Patient rotated
+108,00001373_010,Fair,Slightly bright
+109,00001373_011,Fair,Patient rotated
+110,00001373_012,Fair,Patient rotated
+111,00001373_013,Poor,Too bright + Patient rotated
+112,00001373_014,Fair,Patient rotated
+113,00001373_015,Fair,patient rotated
+114,00001373_016,Fair,Patient rotated
+115,00001373_017,Poor,"Patient rotated, some parts cut off"
+116,00001373_018,Fair,Patient rotated
+117,00001373_019,Poor,Patient too rotated + left shoulder cut off
+118,00001373_020,Poor,"Patient too lotated, edges too tight"
+119,00001373_021,Fair,Patient rotated
+120,00001373_022,Fair,Patient rotated
+121,00001373_023,Fair,patient rotated
+122,00001373_024,Fair,Patient rotated
+123,00001373_025,Fair,patient rotated
+124,00001373_026,Fair,Slightly too bright
+125,00001373_027,Good,
+126,00001373_028,Fair,edges too tight
+127,00001373_029,Fair,Not well positioned; jaw obstructing upper lung field
+128,00001373_030,Fair,Patient rotated
+129,00001373_031,Fair,Patient rotated
+130,00001373_032,Fair,vertebrae not visible behind cardiac shadow
+131,00001373_033,Fair,Patient rotated
+132,00001373_034,Fair,Patient rotated
+133,00001373_035,Fair,Left shoulder not in sight
+134,00001373_036,Poor,"patient rotated, slightly bright, right lower lung border too tight"
+135,00001373_037,Poor,"left lower lung border not visible, patient rotated"
+136,00001373_038,Fair,Lower border of both lungs not visible
+137,00001373_039,Fair,Slightly bright
+138,00001373_040,Fair,Slightly bright
+139,00001373_041,Poor,"patient rotated, slightly bright, left lower lung border too tight"
+140,00001373_042,Poor,"Patient rotated, left shoulder not visible. "
+141,00001373_043,Fair,patient rotated
+142,00001373_044,Fair,Slightly bright
+143,00001373_045,Fair,patient rotated
+144,00001373_046,Fair,Patient rotated
+145,00001373_047,Fair,patient rotated
+146,00001373_048,Fair,patient rotated
+147,00001373_049,Fair,patient rotated
+148,00001373_050,Fair,vertebrae not visible behind cardiac shadow
+149,00001373_051,Fair,patient rotated
+150,00001373_052,Fair,patient rotated
+151,00001373_053,Fair,patient rotated
+152,00001373_054,Poor,"Patient rotated, left lower lung zone not visible"
+153,00001373_055,Fair,edges too tight
+154,00001374_000,Good,
+155,00001375_000,Fair,Right lower lung border cut off
+156,00001376_000,Good,
+157,00001376_001,Good,
+158,00001376_002,Good,
+159,00001376_003,Good,
+160,00001376_004,Good,
+161,00001376_005,Good,
+162,00001376_006,Fair,a litte rotated
+163,00001376_007,Fair,a litte rotated
+164,00001376_008,Fair,Slightly bright
+165,00001376_009,Fair,Patient rotated
+166,00001376_010,Fair,a litte rotated
+167,00001377_000,Good,
+168,00001377_001,Good,
+169,00001377_002,Fair,Patient rotated
+170,00001377_003,Good,
+171,00001377_004,Good,
+172,00001377_005,Good,
+173,00001378_000,Good,
+174,00001378_001,Good,
+175,00001378_002,Good,
+176,00001378_003,Good,
+177,00001378_004,Good,
+178,00001379_000,Good,
+179,00001380_000,Fair,edges too tight
+180,00001381_000,Good,
+181,00001381_001,Good,
+182,00001381_002,Fair,edges too tight
+183,00001381_003,Fair,patient rotated
+184,00001381_004,Good,
+185,00001381_005,Fair,patient rotated
+186,00001381_006,Fair,patient rotated. 
+187,00001381_007,Fair,
+188,00001381_008,Fair,patient rotated
+189,00001381_009,Fair,Slightly bright
+190,00001381_010,Good,
+191,00001381_011,Fair,Left side has this whitish foreign body
+192,00001381_012,Good,
+193,00001381_013,Good,
+194,00001382_000,Fair,patient rotated
+195,00001382_001,Poor,"patient rotated, slightly bright"
+196,00001382_002,Fair,patient rotated
+197,00001382_003,Fair,patient rotated
+198,00001382_004,Poor,patient too rotated
+199,00001383_000,Good,
+200,00001383_001,Good,
+201,00001384_000,Good,
+202,00001384_001,Good,
+203,00001385_000,Poor,Too bright
+204,00001385_001,Fair,Left shoulder not in sight
+205,00001385_002,Fair,Left shoulder not in sight
+206,00001385_003,Fair,right shoulder not fully shown
+207,00001385_004,Good,
+208,00001385_005,Good,
+209,00001385_006,Fair,slightly bright
+210,00001385_007,Good,
+211,00001385_008,Good,
+212,00001385_009,Good,
+213,00001385_010,Fair,slightly bright
+214,00001385_011,Fair,patient rotated
+215,00001385_012,Good,
+216,00001385_013,Good,
+217,00001385_014,Fair,Left shoulder not in sight
+218,00001385_015,Good,
+219,00001385_016,Fair,Both shoulders not fully shown
+220,00001385_017,Good,
+221,00001385_018,Good,
+222,00001385_019,Good,
+223,00001385_020,Fair,right shoulder not fully shown
+224,00001386_000,Good,
+225,00001387_000,Good,
+226,00001388_000,Fair,Left shoulder not fully in sight
+227,00001389_000,Fair,both upper lung zones not fully shown
+228,00001389_001,Fair,both upper lung zones not fully shown
+229,00001389_002,Fair,"neck not shown, both shoulder not fully shown"
+231,00001389_004,Good,
+232,00001389_005,Good,
+233,00001390_000,Good,
+234,00001391_000,Fair,both shoulder not fully shown
+235,00001392_000,Fair,both shoulders not fully shown
+236,00001393_000,Good,
+237,00001394_000,Good,
+238,00001394_001,Good,
+239,00001395_000,Fair,right shoulder not fully shown
+240,00001395_001,Fair,right shoulder not fully showned
+241,00001395_002,Fair,both shoulders not fully shown
+242,00001395_003,Fair,right shoulder not fully shown
+243,00001395_004,Good,
+244,00001395_005,Fair,right shoulder not fully shown
+245,00001395_006,Fair,right shoulder not fully showns
+246,00001395_007,Fair,both shoulders not fully shown
+247,00001395_008,Poor,"Lower border of both lungs not visible, slightly bright"
+248,00001395_009,Fair,"edges too tight, lower lung zones not fully shown"
+249,00001395_010,Good,
+250,00001395_011,Fair,both shoulders not fully shown
+251,00001395_012,Good,
+252,00001395_013,Good,
+253,00001395_014,Good,
+254,00001396_000,Good,
+255,00001397_000,Fair,Slightly bright
+256,00001397_001,Fair,both shoulders not fully shown
+257,00001397_002,Fair,right shoulder and lower lung border not fully shown
+258,00001397_003,Poor,"Too bright, left shoulder not fully shown"
+259,00001397_004,Fair,Slightly bright
+260,00001397_005,Fair,both shoulders not fully shown
+261,00001397_006,Good,
+262,00001397_007,Fair,"Right shoulder not fully shown, right lung border too tight"
+263,00001397_008,Good,
+264,00001397_009,Poor,Too bright
+265,00001397_010,Poor,"patient rotated, slightly bright"
+266,00001397_011,Fair,"Right shoulder not fully shown, right lung border too sharp"
+267,00001397_012,Fair,"Right shoulder not fully shown, right lung border too sharp"
+268,00001397_013,Fair,Left shoulder not fully shown
+269,00001398_000,Good,
+270,00001398_001,Fair,both shoulders not fully shown
+271,00001398_002,Fair,both shoulders not fully shown
+272,00001398_003,Good,
+273,00001398_004,Good,
+274,00001399_000,Fair,both shoulders not fully shown
+275,00001400_000,Good,
+276,00001401_000,Fair,Right shoulder not fully shown
+277,00001401_001,Fair,both shoulders not fully shown
+278,00001401_002,Fair,right shoulder not fully shown
+279,00001402_000,Good,
+280,00001403_000,Fair,both shoulders not fully shown
+281,00001403_001,Good,
+282,00001403_002,Good,
+283,00001403_003,Good,
+284,00001404_000,Fair,both shoulders not fully shown
+285,00001404_001,Fair,both shoulders not fully shown
+286,00001404_002,Fair,"lower lung zones cut out, both shoulders not fully visible."
+287,00001404_003,Fair,lower lung zones cut out
+288,00001404_004,Fair,both shoulders not fully shown
+289,00001404_005,Fair,both shoulders not fully shown
+290,00001404_006,Good,
+291,00001404_007,Good,
+292,00001404_008,Fair,upper lung zones cut out
+293,00001405_000,Good,
+294,00001406_000,Good,
+295,00001406_001,Good,
+296,00001407_000,Good,
+297,00001408_000,Fair,"slightly bright, both shoulders not fully shown"
+298,00001409_000,Good,
+299,00001409_001,Good,
+300,00001409_002,Fair,"right shoulder not fully seen, right lower lung border not fully seen"
+, , ,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+ ,,,
+ ,,,
+ ,,,
+ ,,,
+ ,,,
+ ,,,
