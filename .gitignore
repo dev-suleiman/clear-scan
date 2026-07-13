@@ -13,7 +13,7 @@ __pycache__/
 *.h5
 *.tflite
 *.pb
-model_files/
+
 
 # Environment secrets
 .env
