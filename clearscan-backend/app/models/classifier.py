@@ -27,7 +27,7 @@ def _defects_from_class(quality_class: str, image: np.ndarray) -> list[str]:
 class QualityClassifier:
     def __init__(self):
         self.model = None
-        model_path = Path(settings.MODEL_DIR) / "quality_classifier.keras"
+        model_path = Path(settings.MODEL_DIR) / "quality_classifier.h5"
         try:
             import tensorflow as tf
             self.model = tf.keras.models.load_model(str(model_path))

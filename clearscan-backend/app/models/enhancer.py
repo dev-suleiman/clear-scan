@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class ImageEnhancer:
     def __init__(self):
         self.model = None
-        model_path = Path(settings.MODEL_DIR) / "enhancement_autoencoder.keras"
+        model_path = Path(settings.MODEL_DIR) / "enhancement_autoencoder.h5"
         try:
             import tensorflow as tf
             self.model = tf.keras.models.load_model(str(model_path), compile=False)
