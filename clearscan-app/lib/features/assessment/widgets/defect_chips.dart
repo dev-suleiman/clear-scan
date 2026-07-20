@@ -27,6 +27,8 @@ class DefectChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasDefects = defects.isNotEmpty;
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -44,14 +46,20 @@ class DefectChips extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.info_rounded,
-                  size: 22, color: AppColors.primary),
+              Icon(
+                hasDefects ? Icons.info_rounded : Icons.check_circle_rounded,
+                size: 22,
+                color: hasDefects ? AppColors.primary : AppColors.good,
+              ),
               const SizedBox(width: 8),
-              Text('Defects Detected', style: AppTextStyles.titleMedium),
+              Text(
+                hasDefects ? 'Defects Detected' : 'No Defects Detected',
+                style: AppTextStyles.titleMedium,
+              ),
             ],
           ),
           const SizedBox(height: 12),
-          if (defects.isEmpty)
+          if (!hasDefects)
             Row(
               children: [
                 const Icon(Icons.check_circle_rounded,

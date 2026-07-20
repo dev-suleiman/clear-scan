@@ -28,7 +28,8 @@ class ConnectivityService extends AsyncNotifier<bool> {
       final response = await _dio
           .get(ApiEndpoints.baseUrl + ApiEndpoints.health);
       return response.statusCode == 200 &&
-          response.data['status'] == 'online';
+          (response.data['status'] == 'ok' ||
+              response.data['status'] == 'online');
     } catch (_) {
       return false;
     }

@@ -107,7 +107,7 @@ flutter run
 
 **Option A — Code:** Edit `lib/core/constants/api_endpoints.dart`:
 ```dart
-static const String baseUrl = 'https://your-actual-app.onrender.com';
+static const String baseUrl = 'http://13.49.30.153:8000';
 ```
 
 **Option B — In-app:** Open the app → Settings → Backend Server → tap the edit icon → enter your URL → Save → Test Connection.
@@ -173,7 +173,7 @@ The connectivity dot in the home screen AppBar reflects the current mode:
    - Run `flutter pub get` after adding model files
 
 2. **Connectivity indicator always shows offline**
-   - Verify `ApiEndpoints.baseUrl` is your actual deployment URL (not `your-app.onrender.com`)
+   - Verify `ApiEndpoints.baseUrl` is your actual deployment URL (for example, `http://13.49.30.153:8000`)
    - Render free tier sleeps after 15 min of inactivity — the first request may take ~30 s to wake it
    - Check Settings → Test Connection for a specific error
 

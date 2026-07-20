@@ -30,6 +30,7 @@ dependencies:
   fl_chart: ^0.68.0
   image: ^4.1.0
   path: ^1.9.0
+  flutter_litert: ^3.5.1
 
 dev_dependencies:
   flutter_test:

@@ -18,7 +18,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _preferCnn = true;
   bool _autoEnhance = false;
-  String _backendUrl = 'https://your-app.onrender.com';
+  String _backendUrl = 'http://13.49.30.153:8000';
   String _cacheSize = 'Calculating…';
   bool _testingConn = false;
   bool _forceOffline = false;
@@ -36,7 +36,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       _preferCnn = prefs.getBool('prefer_cnn') ?? true;
       _autoEnhance = prefs.getBool('auto_enhance') ?? false;
       _backendUrl =
-          prefs.getString('backend_url') ?? 'https://your-app.onrender.com';
+          prefs.getString('backend_url') ?? 'http://13.49.30.153:8000';
       _forceOffline = prefs.getBool('force_offline') ?? false;
     });
   }
@@ -328,7 +328,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         content: TextField(
           controller: ctrl,
           decoration: const InputDecoration(
-              hintText: 'https://your-app.onrender.com'),
+              hintText: 'http://13.49.30.153:8000'),
           keyboardType: TextInputType.url,
         ),
         actions: [

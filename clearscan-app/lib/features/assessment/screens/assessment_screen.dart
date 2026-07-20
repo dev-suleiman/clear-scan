@@ -49,7 +49,6 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          // App bar
           Container(
             color: Colors.white,
             child: SafeArea(
@@ -84,7 +83,6 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // X-ray image viewer
                   Padding(
                     padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
                     child: ClipRRect(
@@ -106,7 +104,6 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                               minScale: PhotoViewComputedScale.contained,
                               maxScale: PhotoViewComputedScale.covered * 3,
                             ),
-                            // Mode chip
                             Positioned(
                               top: 10, right: 10,
                               child: Container(
@@ -156,13 +153,14 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                     ),
                   ),
 
-                  // Results area
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: assessState.when(
                       data: (result) {
                         if (result == null) return const SizedBox();
-                        // Save to DB on first result
+                        final shouldShowEnhanceButton =
+                            result.defects.isNotEmpty ||
+                            result.qualityClass.toLowerCase() == 'poor';
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           _saveSession(result.qualityClass,
                               result.confidence, result.defects);
@@ -186,6 +184,26 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                               duration: const Duration(milliseconds: 600),
                               child: MetricsCard(metrics: result.metrics),
                             ),
+                            if (shouldShowEnhanceButton) ...[
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                width: double.infinity,
+                                child: FilledButton.icon(
+                                  onPressed: () => context.push('/enhancement', extra: {
+                                    'file': widget.imageFile,
+                                    'assessmentResult': result,
+                                  }),
+                                  icon: const Icon(Icons.auto_fix_high_rounded,
+                                      size: 18),
+                                  label: const Text('Enhance Image'),
+                                  style: FilledButton.styleFrom(
+                                    backgroundColor: AppColors.primary,
+                                    minimumSize: const Size(0, 48),
+                                    shape: const StadiumBorder(),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ],
                         );
                       },
@@ -203,43 +221,55 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
             ),
           ),
 
-          // Bottom action bar
           assessState.when(
             data: (result) {
               if (result == null) return const SizedBox();
+              final shouldShowEnhanceButton =
+                  result.defects.isNotEmpty ||
+                  result.qualityClass.toLowerCase() == 'poor';
               return Container(
                 color: Colors.white,
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 26),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 34,
-                      child: OutlinedButton(
-                        onPressed: () => context.go('/home'),
-                        style: OutlinedButton.styleFrom(
-                            minimumSize: const Size(0, 48)),
-                        child: const Text('New Scan'),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: FilledButton.icon(
-                        onPressed: () => context.push('/enhancement', extra: {
-                          'file': widget.imageFile,
-                          'assessmentResult': result,
-                        }),
-                        icon: const Icon(Icons.arrow_forward_rounded,
-                            size: 18),
-                        label: const Text('Enhance Image'),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          minimumSize: const Size(0, 48),
-                          shape: const StadiumBorder(),
+                child: shouldShowEnhanceButton
+                    ? Row(
+                        children: [
+                          Expanded(
+                            flex: 34,
+                            child: OutlinedButton(
+                              onPressed: () => context.go('/home'),
+                              style: OutlinedButton.styleFrom(
+                                  minimumSize: const Size(0, 48)),
+                              child: const Text('New Scan'),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: FilledButton.icon(
+                              onPressed: () => context.push('/enhancement', extra: {
+                                'file': widget.imageFile,
+                                'assessmentResult': result,
+                              }),
+                              icon: const Icon(Icons.arrow_forward_rounded,
+                                  size: 18),
+                              label: const Text('Enhance Image'),
+                              style: FilledButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                minimumSize: const Size(0, 48),
+                                shape: const StadiumBorder(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton(
+                          onPressed: () => context.go('/home'),
+                          style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(0, 48)),
+                          child: const Text('New Scan'),
                         ),
                       ),
-                    ),
-                  ],
-                ),
               );
             },
             loading: () => const SizedBox(),
