@@ -1,16 +1,15 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 
 class ImageComparisonSlider extends StatefulWidget {
-  final File originalFile;
-  final File enhancedFile;
+  final ImageProvider originalImage;
+  final ImageProvider enhancedImage;
   final double height;
 
   const ImageComparisonSlider({
     super.key,
-    required this.originalFile,
-    required this.enhancedFile,
+    required this.originalImage,
+    required this.enhancedImage,
     this.height = 300,
   });
 
@@ -68,8 +67,10 @@ class _ImageComparisonSliderState extends State<ImageComparisonSlider>
                 children: [
                   // Enhanced (right, full)
                   Positioned.fill(
-                    child: Image.file(widget.enhancedFile,
-                        fit: BoxFit.cover),
+                    child: Image(
+                      image: widget.enhancedImage,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   // Original (left, clipped)
                   Positioned(
@@ -78,9 +79,11 @@ class _ImageComparisonSliderState extends State<ImageComparisonSlider>
                     child: ClipRect(
                       child: SizedBox(
                         width: w,
-                        child: Image.file(widget.originalFile,
-                            fit: BoxFit.cover,
-                            width: w),
+                        child: Image(
+                          image: widget.originalImage,
+                          fit: BoxFit.cover,
+                          width: w,
+                        ),
                       ),
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/services/api_service.dart';
@@ -30,10 +31,12 @@ class EnhancementNotifier
   }
 
   Future<void> _enhanceOffline(File image) async {
-    await _ref.read(claheServiceProvider).enhanceImage(image);
-    // Build a synthetic EnhancementResult for the offline case
+    final enhancedFile =
+        await _ref.read(claheServiceProvider).enhanceImage(image);
+    final bytes = await enhancedFile.readAsBytes();
+
     final result = EnhancementResult(
-      enhancedImageB64: '',
+      enhancedImageB64: base64Encode(bytes),
       method: 'clahe',
       beforeMetrics: const {
         'ssim': 0.62, 'psnr': 22.4, 'brisque': 48.1,

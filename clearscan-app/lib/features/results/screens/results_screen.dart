@@ -532,7 +532,6 @@ class _MetricsTable extends StatelessWidget {
           }),
           // Quality class row
           Container(
-            color: Colors.white,
             padding: const EdgeInsets.symmetric(
                 horizontal: 16, vertical: 11),
             decoration: const BoxDecoration(

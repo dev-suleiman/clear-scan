@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gal/gal.dart';
@@ -31,6 +32,7 @@ class EnhancementScreen extends ConsumerStatefulWidget {
 class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
   bool _useBest = true;
   File? _enhancedFile;
+  Uint8List? _enhancedBytes;
 
   @override
   void initState() {
@@ -50,7 +52,10 @@ class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
     final state = ref.read(enhancementProvider);
     final result = state.valueOrNull;
     if (result == null || result.enhancedImageB64.isEmpty) {
-      setState(() => _enhancedFile = widget.imageFile);
+      setState(() {
+        _enhancedBytes = null;
+        _enhancedFile = widget.imageFile;
+      });
       return;
     }
     try {
@@ -58,9 +63,15 @@ class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
       final tmp = await getTemporaryDirectory();
       final f = File('${tmp.path}/enhanced_${DateTime.now().millisecondsSinceEpoch}.png')
         ..writeAsBytesSync(bytes);
-      setState(() => _enhancedFile = f);
+      setState(() {
+        _enhancedBytes = bytes;
+        _enhancedFile = f;
+      });
     } catch (_) {
-      setState(() => _enhancedFile = widget.imageFile);
+      setState(() {
+        _enhancedBytes = null;
+        _enhancedFile = widget.imageFile;
+      });
     }
   }
 
@@ -119,13 +130,15 @@ class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
                       if (result == null) return const SizedBox();
                       WidgetsBinding.instance.addPostFrameCallback(
                           (_) => _extractEnhancedFile());
-                      final ef =
-                          _enhancedFile ?? widget.imageFile;
+                      final enhancedImage = _enhancedBytes != null
+                          ? MemoryImage(_enhancedBytes!)
+                          : FileImage(_enhancedFile ?? widget.imageFile)
+                              as ImageProvider;
                       return Column(
                         children: [
                           ImageComparisonSlider(
-                            originalFile: widget.imageFile,
-                            enhancedFile: ef,
+                            originalImage: FileImage(widget.imageFile),
+                            enhancedImage: enhancedImage,
                           ),
                           const SizedBox(height: 16),
                           _MetricsRow(result: result),
@@ -162,7 +175,7 @@ class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
                       icon: Icons.save_alt_rounded,
                       label: 'Save',
                       onTap: () async {
-                        final ef = _enhancedFile;
+                        final ef = await _getEnhancedFileForSave();
                         if (ef == null) return;
                         await Gal.putImage(ef.path);
                         if (context.mounted) {
@@ -211,6 +224,22 @@ class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
         ],
       ),
     );
+  }
+
+  Future<File?> _getEnhancedFileForSave() async {
+    final file = _enhancedFile;
+    if (file != null) {
+      return file;
+    }
+    final bytes = _enhancedBytes;
+    if (bytes == null) {
+      return null;
+    }
+    final tmp = await getTemporaryDirectory();
+    final f = File('${tmp.path}/enhanced_${DateTime.now().millisecondsSinceEpoch}.png')
+      ..writeAsBytesSync(bytes);
+    _enhancedFile = f;
+    return f;
   }
 
   Widget _buildSegToggle(bool isOnline) {
