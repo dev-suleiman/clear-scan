@@ -671,9 +671,8 @@ class _BottomNav extends StatelessWidget {
                 ),
               ),
               _NavItem(icon: Icons.settings_rounded, label: 'Settings',
-                  active: active == 2,
+                  active: active == 2, flex: 2,
                   onTap: () => context.push('/settings')),
-              const Expanded(child: SizedBox()),
             ],
           ),
         ),
@@ -687,15 +686,18 @@ class _NavItem extends StatelessWidget {
   final String label;
   final bool active;
   final VoidCallback onTap;
+  final int flex;
 
   const _NavItem({
     required this.icon, required this.label,
     required this.active, required this.onTap,
+    this.flex = 1,
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: flex,
       child: GestureDetector(
         onTap: onTap,
         behavior: HitTestBehavior.opaque,
