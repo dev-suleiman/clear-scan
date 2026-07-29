@@ -33,6 +33,7 @@ class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
   bool _useBest = true;
   File? _enhancedFile;
   Uint8List? _enhancedBytes;
+  String? _extractedForB64;
 
   @override
   void initState() {
@@ -52,10 +53,17 @@ class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
     final state = ref.read(enhancementProvider);
     final result = state.valueOrNull;
     if (result == null || result.enhancedImageB64.isEmpty) {
+      _extractedForB64 = null;
       setState(() {
         _enhancedBytes = null;
         _enhancedFile = widget.imageFile;
       });
+      return;
+    }
+    if (_extractedForB64 == result.enhancedImageB64) {
+      // Already extracted this exact result; avoid re-decoding on every
+      // rebuild, which would hand the Image widget a new (non-identical)
+      // MemoryImage each time and prevent it from ever finishing a frame.
       return;
     }
     try {
@@ -63,11 +71,13 @@ class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
       final tmp = await getTemporaryDirectory();
       final f = File('${tmp.path}/enhanced_${DateTime.now().millisecondsSinceEpoch}.png')
         ..writeAsBytesSync(bytes);
+      _extractedForB64 = result.enhancedImageB64;
       setState(() {
         _enhancedBytes = bytes;
         _enhancedFile = f;
       });
     } catch (_) {
+      _extractedForB64 = null;
       setState(() {
         _enhancedBytes = null;
         _enhancedFile = widget.imageFile;
@@ -128,8 +138,6 @@ class _EnhancementScreenState extends ConsumerState<EnhancementScreen> {
                   enhState.when(
                     data: (result) {
                       if (result == null) return const SizedBox();
-                      WidgetsBinding.instance.addPostFrameCallback(
-                          (_) => _extractEnhancedFile());
                       final enhancedImage = _enhancedBytes != null
                           ? MemoryImage(_enhancedBytes!)
                           : FileImage(_enhancedFile ?? widget.imageFile)

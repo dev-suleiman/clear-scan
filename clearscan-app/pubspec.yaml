@@ -37,6 +37,14 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
 
+# path_provider_android >=2.3.0 switched its native bridge to the `jni` package,
+# whose build.gradle assumes AGP >=9's built-in Kotlin support registers the
+# `kotlin {}` extension automatically. It doesn't, so the build fails with
+# "Could not find method kotlin()". Pin to the last pre-JNI release until
+# https://github.com/dart-lang/jnigen/issues (jni AGP 9 support) lands upstream.
+dependency_overrides:
+  path_provider_android: 2.2.22
+
 flutter:
   uses-material-design: true
   assets:
