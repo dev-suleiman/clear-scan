@@ -5,12 +5,15 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/app_colors.dart';
 import 'core/constants/app_text_styles.dart';
+import 'core/services/api_service.dart';
+import 'core/services/connectivity_service.dart';
 import 'features/onboarding/screens/onboarding_screen.dart';
 import 'features/home/screens/home_screen.dart';
 import 'features/assessment/screens/assessment_screen.dart';
 import 'features/enhancement/screens/enhancement_screen.dart';
 import 'features/results/screens/results_screen.dart';
 import 'features/history/screens/history_screen.dart';
+import 'features/history/screens/session_detail_screen.dart';
 import 'features/settings/screens/settings_screen.dart';
 import 'models/assessment_result.dart';
 import 'models/enhancement_result.dart';
@@ -37,6 +40,13 @@ GoRouter _buildRouter() => GoRouter(
         GoRoute(
           path: '/history',
           builder: (_, __) => const HistoryScreen(),
+        ),
+        GoRoute(
+          path: '/session-detail',
+          builder: (_, state) {
+            final session = state.extra as Map<String, dynamic>;
+            return SessionDetailScreen(session: session);
+          },
         ),
         GoRoute(
           path: '/assessment',
@@ -85,18 +95,30 @@ class ClearScanApp extends StatelessWidget {
   }
 }
 
-class _AppBody extends StatefulWidget {
+class _AppBody extends ConsumerStatefulWidget {
   @override
-  State<_AppBody> createState() => _AppBodyState();
+  ConsumerState<_AppBody> createState() => _AppBodyState();
 }
 
-class _AppBodyState extends State<_AppBody> {
+class _AppBodyState extends ConsumerState<_AppBody> {
   late final GoRouter _router;
 
   @override
   void initState() {
     super.initState();
     _router = _buildRouter();
+    _loadPersistedSettings();
+  }
+
+  Future<void> _loadPersistedSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
+    final savedUrl = prefs.getString('backend_url');
+    if (savedUrl != null && savedUrl.isNotEmpty) {
+      ref.read(backendUrlProvider.notifier).state = savedUrl;
+    }
+    ref.read(forceOfflineProvider.notifier).state =
+        prefs.getBool('force_offline') ?? false;
   }
 
   @override
@@ -127,13 +149,13 @@ class _AppBodyState extends State<_AppBody> {
           foregroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          titleTextStyle: AppTextStyles.titleLarge
-              .copyWith(color: Colors.white),
+          titleTextStyle:
+              AppTextStyles.titleLarge.copyWith(color: Colors.white),
         ),
         cardTheme: CardThemeData(
           elevation: 0,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           color: AppColors.surface,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -141,10 +163,8 @@ class _AppBodyState extends State<_AppBody> {
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
             shape: const StadiumBorder(),
-            padding: const EdgeInsets.symmetric(
-                horizontal: 24, vertical: 14),
-            textStyle: AppTextStyles.labelLarge
-                .copyWith(color: Colors.white),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+            textStyle: AppTextStyles.labelLarge.copyWith(color: Colors.white),
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
@@ -152,13 +172,11 @@ class _AppBodyState extends State<_AppBody> {
             foregroundColor: AppColors.primary,
             side: const BorderSide(color: AppColors.primary, width: 1.5),
             shape: const StadiumBorder(),
-            padding: const EdgeInsets.symmetric(
-                horizontal: 24, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
         dividerTheme: const DividerThemeData(
             color: AppColors.divider, space: 1, thickness: 1),

@@ -94,8 +94,11 @@ class ClaheService {
       // Apply CLAHE (tile-based limited histogram equalisation)
       image = _applyClahe(image, tileSize: 64, clipLimit: 2.0);
 
-      // Gentle unsharp mask for sharpness
-      final blurred = img.gaussianBlur(image, radius: 1);
+      // Gentle unsharp mask for sharpness.
+      // img.gaussianBlur mutates its argument in place, so it must be given
+      // a clone here — otherwise `image` and `blurred` end up aliasing the
+      // same (blurred) data and _unsharpMask becomes a no-op.
+      final blurred = img.gaussianBlur(image.clone(), radius: 1);
       image = _unsharpMask(image, blurred, amount: 0.5);
 
       final tmp = await getTemporaryDirectory();

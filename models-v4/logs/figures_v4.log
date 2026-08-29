@@ -1,0 +1,54 @@
+2026-07-29 19:15:55.600191: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-07-29 19:15:55.647443: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2026-07-29 19:15:55.647482: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2026-07-29 19:15:55.648615: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2026-07-29 19:15:55.655234: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-07-29 19:15:56.483729: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2026-07-29 19:15:58.634607: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2026-07-29 19:15:58.683261: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2026-07-29 19:15:58.685435: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2026-07-29 19:15:58.687975: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2026-07-29 19:15:58.689996: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2026-07-29 19:15:58.692032: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2026-07-29 19:15:58.848290: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2026-07-29 19:15:58.849682: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2026-07-29 19:15:58.850963: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2026-07-29 19:15:58.852156: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1929] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 13766 MB memory:  -> device: 0, name: Tesla T4, pci bus id: 0000:00:1e.0, compute capability: 7.5
+2026-07-29 19:16:16.330688: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:454] Loaded cuDNN version 8904
+2026-07-29 19:16:16.454798: I external/local_tsl/tsl/platform/default/subprocess.cc:304] Start cannot spawn child process: No such file or directory
+2026-07-29 19:16:19.517549: I external/local_tsl/tsl/platform/default/subprocess.cc:304] Start cannot spawn child process: No such file or directory
+Loading model: /home/ec2-user/clearscan-models-v2/models/saved/enhancement_autoencoder.keras
+Test split: 560 total  (real=117, synthetic=443)
+Saved: /home/ec2-user/clearscan-models-v2/models/saved/eval_figures/enhancement_comparison_grid_v4.png
+Saved: /home/ec2-user/clearscan-models-v2/models/saved/eval_figures/comparison_chart_v4.png
+Saved: /home/ec2-user/clearscan-models-v2/models/saved/eval_figures/best_enhancement_example_v4.png
+Saved: /home/ec2-user/clearscan-models-v2/models/saved/eval_figures/overexposure_correction_example_v4.png
+Saved: /home/ec2-user/clearscan-models-v2/models/saved/eval_figures/synthetic_validation_example_v4.png
+Synthetic sanity check: SSIM 0.816 -> 0.928  PSNR 10.9 -> 28.2dB
+Saved: /home/ec2-user/clearscan-models-v2/models/saved/evaluation_results.csv
+
+CLEARSCAN V4 ENHANCEMENT RESULTS (real overexposure test pairs)
+
++--------------------------------------+--------------+--------------+--------------+
+| Sample                               | Original     | CLAHE        | CNN          |
+|                                      | SSIM/PSNR    | SSIM/PSNR    | SSIM/PSNR    |
++======================================+==============+==============+==============+
+| 00002554_001.png (real_same_patient) | 0.608 / 11.4 | 0.550 / 11.2 | 0.646 / 11.7 |
++--------------------------------------+--------------+--------------+--------------+
+| 00004900_000.png (real_same_patient) | 0.614 / 19.6 | 0.484 / 16.9 | 0.752 / 20.5 |
++--------------------------------------+--------------+--------------+--------------+
+| 00003405_001.png (real_same_patient) | 0.523 / 11.1 | 0.449 / 11.5 | 0.632 / 14.5 |
++--------------------------------------+--------------+--------------+--------------+
+| 00001075_044.png (real_same_patient) | 0.584 / 12.6 | 0.502 / 11.8 | 0.657 / 12.7 |
++--------------------------------------+--------------+--------------+--------------+
+| 00003470_003.png (real_same_patient) | 0.625 / 16.5 | 0.524 / 15.2 | 0.724 / 17.8 |
++--------------------------------------+--------------+--------------+--------------+
+| 00006519_006.png (real_same_patient) | 0.630 / 14.4 | 0.530 / 13.2 | 0.707 / 14.6 |
++--------------------------------------+--------------+--------------+--------------+
+| MEAN                                 | 0.597 / 14.3 | 0.506 / 13.3 | 0.686 / 15.3 |
++--------------------------------------+--------------+--------------+--------------+
+
+CNN win rate: 6 out of 6 images
+CLAHE 20% SSIM improvement target: NOT MET (-15.2%)
+CNN 20% SSIM improvement target:   NOT MET (14.9%)

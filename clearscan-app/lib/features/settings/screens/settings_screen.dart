@@ -6,7 +6,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/constants/api_endpoints.dart';
+import '../../../core/services/api_service.dart';
 import '../../../core/services/connectivity_service.dart';
+import '../../../core/services/database_service.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -18,7 +21,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _preferCnn = true;
   bool _autoEnhance = false;
-  String _backendUrl = 'http://13.49.30.153:8000';
+  String _backendUrl = ApiEndpoints.baseUrl;
   String _cacheSize = 'Calculating…';
   bool _testingConn = false;
   bool _forceOffline = false;
@@ -35,8 +38,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     setState(() {
       _preferCnn = prefs.getBool('prefer_cnn') ?? true;
       _autoEnhance = prefs.getBool('auto_enhance') ?? false;
-      _backendUrl =
-          prefs.getString('backend_url') ?? 'http://13.49.30.153:8000';
+      _backendUrl = prefs.getString('backend_url') ?? ApiEndpoints.baseUrl;
       _forceOffline = prefs.getBool('force_offline') ?? false;
     });
   }
@@ -61,7 +63,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Future<void> _saveUrl(String url) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('backend_url', url);
+    ref.read(backendUrlProvider.notifier).state = url;
     setState(() => _backendUrl = url);
+    ref.read(connectivityProvider.notifier).refresh();
   }
 
   Future<void> _testConnection() async {
@@ -79,6 +83,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     }
   }
 
+  Future<void> _clearHistory() async {
+    await DatabaseService.clearAll();
+    if (mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('History cleared')));
+    }
+  }
+
   Future<void> _clearCache() async {
     final tmp = await getTemporaryDirectory();
     for (final f in tmp.listSync()) {
@@ -88,8 +100,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     }
     _calcCache();
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Cache cleared')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Cache cleared')));
     }
   }
 
@@ -107,8 +119,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 height: 52,
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: AppColors.divider))),
+                    border:
+                        Border(bottom: BorderSide(color: AppColors.divider))),
                 child: Row(
                   children: [
                     IconButton(
@@ -137,15 +149,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
-                      boxShadow: [BoxShadow(
-                          color: AppColors.cardShadow,
-                          blurRadius: 16, offset: const Offset(0, 4))],
+                      boxShadow: [
+                        BoxShadow(
+                            color: AppColors.cardShadow,
+                            blurRadius: 16,
+                            offset: const Offset(0, 4))
+                      ],
                     ),
                     padding: const EdgeInsets.all(16),
                     child: Row(
                       children: [
                         Container(
-                          width: 56, height: 56,
+                          width: 56,
+                          height: 56,
                           decoration: const BoxDecoration(
                             color: AppColors.surfaceBlue,
                             shape: BoxShape.circle,
@@ -160,13 +176,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             children: [
                               Text('Dr. User',
                                   style: AppTextStyles.titleMedium),
-                              Text('Tap to edit profile',
+                              Text('ClearScan User',
                                   style: AppTextStyles.bodyMedium),
                             ],
                           ),
                         ),
-                        const Icon(Icons.edit_rounded,
-                            size: 20, color: AppColors.textSecondary),
                       ],
                     ),
                   ),
@@ -189,10 +203,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     sub: 'Verify API connectivity',
                     trailing: _testingConn
                         ? const SizedBox(
-                            width: 22, height: 22,
+                            width: 22,
+                            height: 22,
                             child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: AppColors.primary))
+                                strokeWidth: 2, color: AppColors.primary))
                         : const Icon(Icons.chevron_right_rounded,
                             color: AppColors.textSecondary),
                     onTap: _testingConn ? null : _testConnection,
@@ -209,8 +223,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       activeThumbColor: AppColors.primary,
                       onChanged: (v) async {
                         setState(() => _preferCnn = v);
-                        final prefs =
-                            await SharedPreferences.getInstance();
+                        final prefs = await SharedPreferences.getInstance();
                         await prefs.setBool('prefer_cnn', v);
                       },
                     ),
@@ -222,8 +235,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       activeThumbColor: AppColors.primary,
                       onChanged: (v) async {
                         setState(() => _autoEnhance = v);
-                        final prefs =
-                            await SharedPreferences.getInstance();
+                        final prefs = await SharedPreferences.getInstance();
                         await prefs.setBool('auto_enhance', v);
                       },
                     ),
@@ -243,8 +255,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       context: context,
                       builder: (_) => AlertDialog(
                         title: const Text('Clear Cache?'),
-                        content: const Text(
-                            'This will delete all temporary files.'),
+                        content:
+                            const Text('This will delete all temporary files.'),
                         actions: [
                           TextButton(
                               onPressed: () => Navigator.pop(context),
@@ -265,6 +277,26 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     sub: 'Remove all session records',
                     trailing: const Icon(Icons.chevron_right_rounded,
                         color: AppColors.textSecondary),
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text('Clear History?'),
+                        content: const Text(
+                            'This will permanently remove all scan session records.'),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Cancel')),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                _clearHistory();
+                              },
+                              child: const Text('Clear',
+                                  style: TextStyle(color: AppColors.poor))),
+                        ],
+                      ),
+                    ),
                     last: true,
                   ),
                 ]),
@@ -284,8 +316,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const _SettingsRow(
                     icon: Icons.gavel_rounded,
                     title: 'Licences',
-                    trailing: Icon(Icons.open_in_new_rounded,
-                        size: 20, color: AppColors.textSecondary),
+                    sub: 'Open-source packages used by ClearScan',
                     last: true,
                   ),
                 ]),
@@ -302,9 +333,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         activeThumbColor: AppColors.fair,
                         onChanged: (v) async {
                           setState(() => _forceOffline = v);
-                          final prefs =
-                              await SharedPreferences.getInstance();
+                          final prefs = await SharedPreferences.getInstance();
                           await prefs.setBool('force_offline', v);
+                          ref.read(forceOfflineProvider.notifier).state = v;
+                          ref.read(connectivityProvider.notifier).refresh();
                         },
                       ),
                       last: true,
@@ -327,8 +359,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         title: const Text('Backend URL'),
         content: TextField(
           controller: ctrl,
-          decoration: const InputDecoration(
-              hintText: 'http://13.49.30.153:8000'),
+          decoration:
+              const InputDecoration(hintText: 'http://13.49.30.153:8000'),
           keyboardType: TextInputType.url,
         ),
         actions: [
@@ -358,9 +390,8 @@ class _SectionLabel extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
       child: Text(label.toUpperCase(),
-          style: AppTextStyles.labelMedium.copyWith(
-              letterSpacing: 1.2,
-              color: AppColors.textSecondary)),
+          style: AppTextStyles.labelMedium
+              .copyWith(letterSpacing: 1.2, color: AppColors.textSecondary)),
     );
   }
 }
@@ -378,9 +409,12 @@ class _SettingsGroup extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [BoxShadow(
-              color: AppColors.cardShadow,
-              blurRadius: 16, offset: const Offset(0, 4))],
+          boxShadow: [
+            BoxShadow(
+                color: AppColors.cardShadow,
+                blurRadius: 16,
+                offset: const Offset(0, 4))
+          ],
         ),
         clipBehavior: Clip.antiAlias,
         child: Column(children: children),
@@ -436,18 +470,15 @@ class _SettingsRow extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          border: last
-              ? null
-              : const Border(
-                  bottom: BorderSide(color: AppColors.divider))),
+            border: last
+                ? null
+                : const Border(bottom: BorderSide(color: AppColors.divider))),
         constraints: const BoxConstraints(minHeight: 56),
-        padding: const EdgeInsets.symmetric(
-            horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
             if (icon != null) ...[
-              Icon(icon, size: 22,
-                  color: iconColor ?? AppColors.textSecondary),
+              Icon(icon, size: 22, color: iconColor ?? AppColors.textSecondary),
               const SizedBox(width: 14),
             ],
             Expanded(
@@ -455,8 +486,9 @@ class _SettingsRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(title, style: AppTextStyles.bodyLarge
-                      .copyWith(fontWeight: FontWeight.w500)),
+                  Text(title,
+                      style: AppTextStyles.bodyLarge
+                          .copyWith(fontWeight: FontWeight.w500)),
                   if (sub != null) ...[
                     const SizedBox(height: 2),
                     Text(sub!,

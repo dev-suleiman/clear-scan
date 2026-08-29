@@ -30,8 +30,8 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
     });
   }
 
-  Future<void> _saveSession(String qualityClass, double confidence,
-      List<String> defects) async {
+  Future<void> _saveSession(
+      String qualityClass, double confidence, List<String> defects) async {
     await DatabaseService.insertSession(
       imagePath: widget.imageFile.path,
       qualityClass: qualityClass,
@@ -57,8 +57,8 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                 height: 52,
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: const BoxDecoration(
-                  border: Border(bottom:
-                      BorderSide(color: AppColors.divider, width: 1)),
+                  border: Border(
+                      bottom: BorderSide(color: AppColors.divider, width: 1)),
                 ),
                 child: Row(
                   children: [
@@ -78,7 +78,6 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
               ),
             ),
           ),
-
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -99,13 +98,14 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                           children: [
                             PhotoView(
                               imageProvider: FileImage(widget.imageFile),
-                              backgroundDecoration: const BoxDecoration(
-                                  color: Color(0xFF0A0A0A)),
+                              backgroundDecoration:
+                                  const BoxDecoration(color: Color(0xFF0A0A0A)),
                               minScale: PhotoViewComputedScale.contained,
                               maxScale: PhotoViewComputedScale.covered * 3,
                             ),
                             Positioned(
-                              top: 10, right: 10,
+                              top: 10,
+                              right: 10,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
@@ -152,7 +152,6 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                       ),
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: assessState.when(
@@ -160,10 +159,10 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                         if (result == null) return const SizedBox();
                         final shouldShowEnhanceButton =
                             result.defects.isNotEmpty ||
-                            result.qualityClass.toLowerCase() == 'poor';
+                                result.qualityClass.toLowerCase() == 'poor';
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                          _saveSession(result.qualityClass,
-                              result.confidence, result.defects);
+                          _saveSession(result.qualityClass, result.confidence,
+                              result.defects);
                         });
                         return Column(
                           children: [
@@ -185,11 +184,12 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
                               child: MetricsCard(metrics: result.metrics),
                             ),
                             if (shouldShowEnhanceButton) ...[
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 8),
                               SizedBox(
                                 width: double.infinity,
                                 child: FilledButton.icon(
-                                  onPressed: () => context.push('/enhancement', extra: {
+                                  onPressed: () =>
+                                      context.push('/enhancement', extra: {
                                     'file': widget.imageFile,
                                     'assessmentResult': result,
                                   }),
@@ -220,56 +220,44 @@ class _AssessmentScreenState extends ConsumerState<AssessmentScreen> {
               ),
             ),
           ),
-
           assessState.when(
             data: (result) {
               if (result == null) return const SizedBox();
-              final shouldShowEnhanceButton =
-                  result.defects.isNotEmpty ||
+              final shouldShowEnhanceButton = result.defects.isNotEmpty ||
                   result.qualityClass.toLowerCase() == 'poor';
-              return Container(
-                color: Colors.white,
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 26),
-                child: shouldShowEnhanceButton
-                    ? Row(
-                        children: [
-                          Expanded(
-                            flex: 34,
-                            child: OutlinedButton(
-                              onPressed: () => context.go('/home'),
-                              style: OutlinedButton.styleFrom(
-                                  minimumSize: const Size(0, 48)),
-                              child: const Text('New Scan'),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: FilledButton.icon(
-                              onPressed: () => context.push('/enhancement', extra: {
-                                'file': widget.imageFile,
-                                'assessmentResult': result,
-                              }),
-                              icon: const Icon(Icons.arrow_forward_rounded,
-                                  size: 18),
-                              label: const Text('Enhance Image'),
-                              style: FilledButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                minimumSize: const Size(0, 48),
-                                shape: const StadiumBorder(),
+              return SafeArea(
+                top: false,
+                child: Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: shouldShowEnhanceButton
+                      ? Row(
+                          children: [
+                            Expanded(
+                              flex: 34,
+                              child: OutlinedButton(
+                                onPressed: () => context.go('/home'),
+                                style: OutlinedButton.styleFrom(
+                                    minimumSize: const Size(0, 40),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20)),
+                                child: const Text('New Scan'),
                               ),
                             ),
+                            const SizedBox(width: 12),
+                      
+                          ],
+                        )
+                      : SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            onPressed: () => context.go('/home'),
+                            style: OutlinedButton.styleFrom(
+                                minimumSize: const Size(0, 40)),
+                            child: const Text('New Scan'),
                           ),
-                        ],
-                      )
-                    : SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton(
-                          onPressed: () => context.go('/home'),
-                          style: OutlinedButton.styleFrom(
-                              minimumSize: const Size(0, 48)),
-                          child: const Text('New Scan'),
                         ),
-                      ),
+                ),
               );
             },
             loading: () => const SizedBox(),
@@ -289,26 +277,38 @@ class _ShimmerLoading extends StatelessWidget {
       highlightColor: const Color(0xFFE6E9ED),
       child: Column(
         children: [
-          Container(height: 100, decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16))),
+          Container(
+              height: 100,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16))),
           const SizedBox(height: 14),
-          Container(height: 80, decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16))),
+          Container(
+              height: 80,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16))),
           const SizedBox(height: 14),
-          Container(height: 140, decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16))),
+          Container(
+              height: 140,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16))),
           const SizedBox(height: 14),
           Row(children: [
-            Expanded(child: Container(height: 48, decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(100)))),
+            Expanded(
+                child: Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100)))),
             const SizedBox(width: 12),
-            Expanded(child: Container(height: 48, decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(100)))),
+            Expanded(
+                child: Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100)))),
           ]),
         ],
       ),
@@ -329,9 +329,12 @@ class _ErrorCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(
-            color: AppColors.cardShadow,
-            blurRadius: 16, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+              color: AppColors.cardShadow,
+              blurRadius: 16,
+              offset: const Offset(0, 4))
+        ],
       ),
       child: Column(
         children: [
@@ -341,8 +344,7 @@ class _ErrorCard extends StatelessWidget {
           Text('Assessment failed', style: AppTextStyles.titleMedium),
           const SizedBox(height: 8),
           Text(message,
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodyMedium),
+              textAlign: TextAlign.center, style: AppTextStyles.bodyMedium),
           const SizedBox(height: 16),
           FilledButton(
             onPressed: onRetry,

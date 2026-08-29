@@ -9,6 +9,7 @@ from fastapi import APIRouter, File, HTTPException, UploadFile
 from app.config import settings
 from app.models.enhancer import enhancer
 from app.processing.clahe import enhance_clahe, image_to_base64
+from app.processing.comparison import reference_metrics
 from app.processing.metrics import compute_metrics, image_quality_to_metrics_dict
 from app.schemas.responses import EnhancementResponse
 
@@ -44,13 +45,16 @@ async def enhance_clahe_endpoint(file: UploadFile = File(...)):
     before_metrics = compute_metrics(image)
     enhanced = enhance_clahe(image)
     after_metrics = compute_metrics(enhanced)
+    ref = reference_metrics(image, enhanced)
     elapsed_ms = (time.perf_counter() - start) * 1000
 
     return EnhancementResponse(
         enhanced_image_b64=image_to_base64(enhanced),
         method="clahe",
         before_metrics=image_quality_to_metrics_dict(before_metrics),
-        after_metrics=image_quality_to_metrics_dict(after_metrics),
+        after_metrics=image_quality_to_metrics_dict(
+            after_metrics, ssim=ref["ssim"], psnr=ref["psnr"]
+        ),
         processing_time_ms=round(elapsed_ms, 2),
     )
 
@@ -72,12 +76,15 @@ async def enhance_cnn_endpoint(file: UploadFile = File(...)):
             )
         raise
     after_metrics = compute_metrics(enhanced)
+    ref = reference_metrics(image, enhanced)
     elapsed_ms = (time.perf_counter() - start) * 1000
 
     return EnhancementResponse(
         enhanced_image_b64=image_to_base64(enhanced),
         method="cnn",
         before_metrics=image_quality_to_metrics_dict(before_metrics),
-        after_metrics=image_quality_to_metrics_dict(after_metrics),
+        after_metrics=image_quality_to_metrics_dict(
+            after_metrics, ssim=ref["ssim"], psnr=ref["psnr"]
+        ),
         processing_time_ms=round(elapsed_ms, 2),
     )

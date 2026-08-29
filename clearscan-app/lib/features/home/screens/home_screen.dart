@@ -9,7 +9,6 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/services/connectivity_service.dart';
 import '../../../core/services/database_service.dart';
 
-
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -48,6 +47,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
       builder: (_) => _SourceSheet(onPick: _pickImage),
@@ -67,8 +67,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           if (!isOnline)
             Container(
               color: const Color(0xFFFFF8E1),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: Row(
                 children: [
                   const Icon(Icons.wifi_off_rounded,
@@ -132,8 +131,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   // Quick actions
                   Text('Quick Actions',
                       style: AppTextStyles.labelMedium.copyWith(
-                          letterSpacing: 1.2,
-                          color: AppColors.textSecondary)),
+                          letterSpacing: 1.2, color: AppColors.textSecondary)),
                   const SizedBox(height: 12),
                   Row(
                     children: [
@@ -165,12 +163,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Recent Sessions',
-                          style: AppTextStyles.titleMedium),
+                      Text('Recent Sessions', style: AppTextStyles.titleMedium),
                       TextButton(
                         onPressed: () => context.push('/history'),
-                        child: Text('View All',
-                            style: AppTextStyles.labelLarge),
+                        child:
+                            Text('View All', style: AppTextStyles.labelLarge),
                       ),
                     ],
                   ),
@@ -189,8 +186,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       return Column(
                         children: sessions
                             .map((s) => Padding(
-                                  padding:
-                                      const EdgeInsets.only(bottom: 10),
+                                  padding: const EdgeInsets.only(bottom: 10),
                                   child: _SessionTile(session: s),
                                 ))
                             .toList(),
@@ -215,8 +211,7 @@ class _AppBarRow extends StatelessWidget {
   final bool isOnline;
   final AnimationController pulseCtrl;
 
-  const _AppBarRow(
-      {required this.isOnline, required this.pulseCtrl});
+  const _AppBarRow({required this.isOnline, required this.pulseCtrl});
 
   @override
   Widget build(BuildContext context) {
@@ -228,14 +223,15 @@ class _AppBarRow extends StatelessWidget {
           height: 52,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: const BoxDecoration(
-            border: Border(
-                bottom: BorderSide(color: AppColors.divider, width: 1)),
+            border:
+                Border(bottom: BorderSide(color: AppColors.divider, width: 1)),
           ),
           child: Row(
             children: [
               // Logo
               Container(
-                width: 34, height: 34,
+                width: 34,
+                height: 34,
                 decoration: BoxDecoration(
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(10),
@@ -251,36 +247,15 @@ class _AppBarRow extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: Text('ClearScan',
-                    style: AppTextStyles.titleLarge),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Stack(
-                  children: [
-                    const Icon(Icons.notifications_none_rounded,
-                        color: AppColors.textSecondary),
-                    Positioned(
-                      top: 6, right: 7,
-                      child: Container(
-                        width: 7, height: 7,
-                        decoration: BoxDecoration(
-                          color: AppColors.poor,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 1.5),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                child: Text('ClearScan', style: AppTextStyles.titleLarge),
               ),
               // Connectivity dot
               Tooltip(
-                message: isOnline
-                    ? 'CNN Mode — Online'
-                    : 'CLAHE Mode — Offline',
+                message:
+                    isOnline ? 'CNN Mode — Online' : 'CLAHE Mode — Offline',
                 child: SizedBox(
-                  width: 20, height: 20,
+                  width: 20,
+                  height: 20,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -290,20 +265,18 @@ class _AppBarRow extends StatelessWidget {
                           builder: (_, __) {
                             final scale = Tween<double>(begin: 1, end: 1.7)
                                 .evaluate(CurvedAnimation(
-                                    parent: pulseCtrl,
-                                    curve: Curves.easeOut));
-                            final opacity = Tween<double>(
-                                    begin: 0.45, end: 0)
+                                    parent: pulseCtrl, curve: Curves.easeOut));
+                            final opacity = Tween<double>(begin: 0.45, end: 0)
                                 .evaluate(CurvedAnimation(
-                                    parent: pulseCtrl,
-                                    curve: Curves.easeOut));
+                                    parent: pulseCtrl, curve: Curves.easeOut));
                             return Transform.scale(
                               scale: scale,
                               child: Container(
-                                width: 10, height: 10,
+                                width: 10,
+                                height: 10,
                                 decoration: BoxDecoration(
-                                  color: AppColors.good
-                                      .withValues(alpha: opacity),
+                                  color:
+                                      AppColors.good.withValues(alpha: opacity),
                                   shape: BoxShape.circle,
                                 ),
                               ),
@@ -311,7 +284,8 @@ class _AppBarRow extends StatelessWidget {
                           },
                         ),
                       Container(
-                        width: 10, height: 10,
+                        width: 10,
+                        height: 10,
                         decoration: BoxDecoration(
                           color: isOnline ? AppColors.good : AppColors.fair,
                           shape: BoxShape.circle,
@@ -355,8 +329,9 @@ class _QuickAction extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: AppColors.cardShadow,
-              blurRadius: 16, offset: const Offset(0, 4)),
+                color: AppColors.cardShadow,
+                blurRadius: 16,
+                offset: const Offset(0, 4)),
           ],
         ),
         padding: const EdgeInsets.all(16),
@@ -364,7 +339,8 @@ class _QuickAction extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 56, height: 56,
+              width: 56,
+              height: 56,
               decoration: BoxDecoration(
                 color: AppColors.surfaceBlue,
                 borderRadius: BorderRadius.circular(14),
@@ -400,76 +376,79 @@ class _SessionTile extends StatelessWidget {
     final qualityClass = session['quality_class'] as String;
     final timestamp =
         DateTime.fromMillisecondsSinceEpoch(session['timestamp'] as int);
-    final formatted =
-        DateFormat('MMM d, yyyy · h:mm a').format(timestamp);
+    final formatted = DateFormat('MMM d, yyyy · h:mm a').format(timestamp);
     final qualityColor = qualityClass == 'Good'
         ? AppColors.good
         : qualityClass == 'Fair'
             ? AppColors.fair
             : AppColors.poor;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-              color: AppColors.cardShadow,
-              blurRadius: 12,
-              offset: const Offset(0, 4)),
-        ],
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      child: Row(
-        children: [
-          Container(
-            width: 52, height: 52,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0C0F12),
-              borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: () => context.push('/session-detail', extra: session),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+                color: AppColors.cardShadow,
+                blurRadius: 12,
+                offset: const Offset(0, 4)),
+          ],
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        child: Row(
+          children: [
+            Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                color: const Color(0xFF0C0F12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.image_rounded,
+                  color: Colors.white54, size: 24),
             ),
-            child: const Icon(Icons.image_rounded,
-                color: Colors.white54, size: 24),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Chest X-Ray',
-                    style: AppTextStyles.bodyLarge
-                        .copyWith(fontWeight: FontWeight.w500),
-                    overflow: TextOverflow.ellipsis),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: qualityColor,
-                        borderRadius: BorderRadius.circular(8),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Chest X-Ray',
+                      style: AppTextStyles.bodyLarge
+                          .copyWith(fontWeight: FontWeight.w500),
+                      overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: qualityColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(qualityClass.toUpperCase(),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700)),
                       ),
-                      child: Text(qualityClass.toUpperCase(),
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700)),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(formatted,
-                          style: AppTextStyles.caption,
-                          overflow: TextOverflow.ellipsis),
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(formatted,
+                            style: AppTextStyles.caption,
+                            overflow: TextOverflow.ellipsis),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Icon(Icons.chevron_right_rounded,
-              color: AppColors.textSecondary, size: 20),
-        ],
+            const Icon(Icons.chevron_right_rounded,
+                color: AppColors.textSecondary, size: 20),
+          ],
+        ),
       ),
     );
   }
@@ -482,8 +461,7 @@ class _EmptyRecent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 32),
       child: Column(
         children: [
-          const Icon(Icons.history_rounded,
-              size: 64, color: Color(0xFFD1D5DB)),
+          const Icon(Icons.history_rounded, size: 64, color: Color(0xFFD1D5DB)),
           const SizedBox(height: 12),
           Text('No scans yet',
               style: AppTextStyles.titleMedium
@@ -504,49 +482,53 @@ class _SourceSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 30),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 32, height: 4,
-            margin: const EdgeInsets.only(bottom: 18),
-            decoration: BoxDecoration(
-              color: AppColors.divider,
-              borderRadius: BorderRadius.circular(100),
+    return SafeArea(
+      top: false,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 32,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 18),
+              decoration: BoxDecoration(
+                color: AppColors.divider,
+                borderRadius: BorderRadius.circular(100),
+              ),
             ),
-          ),
-          Text('Choose Image Source',
-              style: AppTextStyles.titleLarge,
-              textAlign: TextAlign.center),
-          const SizedBox(height: 18),
-          _OptionTile(
-            icon: Icons.photo_library_rounded,
-            title: 'Upload from Gallery',
-            sub: 'Choose an existing X-ray image',
-            onTap: () {
-              Navigator.pop(context);
-              onPick(ImageSource.gallery);
-            },
-          ),
-          const SizedBox(height: 12),
-          _OptionTile(
-            icon: Icons.camera_alt_rounded,
-            title: 'Capture with Camera',
-            sub: 'Take a photo of the X-ray on the lightbox',
-            onTap: () {
-              Navigator.pop(context);
-              onPick(ImageSource.camera);
-            },
-          ),
-          const SizedBox(height: 8),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: AppTextStyles.bodyMedium
-                .copyWith(fontWeight: FontWeight.w600)),
-          ),
-        ],
+            Text('Choose Image Source',
+                style: AppTextStyles.titleLarge, textAlign: TextAlign.center),
+            const SizedBox(height: 18),
+            _OptionTile(
+              icon: Icons.photo_library_rounded,
+              title: 'Upload from Gallery',
+              sub: 'Choose an existing X-ray image',
+              onTap: () {
+                Navigator.pop(context);
+                onPick(ImageSource.gallery);
+              },
+            ),
+            const SizedBox(height: 12),
+            _OptionTile(
+              icon: Icons.camera_alt_rounded,
+              title: 'Capture with Camera',
+              sub: 'Take a photo of the X-ray on the lightbox',
+              onTap: () {
+                Navigator.pop(context);
+                onPick(ImageSource.camera);
+              },
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel',
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(fontWeight: FontWeight.w600)),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -559,8 +541,10 @@ class _OptionTile extends StatelessWidget {
   final VoidCallback onTap;
 
   const _OptionTile({
-    required this.icon, required this.title,
-    required this.sub, required this.onTap,
+    required this.icon,
+    required this.title,
+    required this.sub,
+    required this.onTap,
   });
 
   @override
@@ -577,7 +561,8 @@ class _OptionTile extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 52, height: 52,
+              width: 52,
+              height: 52,
               decoration: BoxDecoration(
                 color: AppColors.surfaceBlue,
                 borderRadius: BorderRadius.circular(14),
@@ -624,12 +609,11 @@ class _BottomNav extends StatelessWidget {
           height: 64,
           child: Row(
             children: [
-              _NavItem(icon: Icons.home_rounded, label: 'Home',
+              _NavItem(
+                  icon: Icons.home_rounded,
+                  label: 'Home',
                   active: active == 0,
                   onTap: () => context.go('/home')),
-              _NavItem(icon: Icons.history_rounded, label: 'History',
-                  active: active == 1,
-                  onTap: () => context.push('/history')),
               // FAB slot
               SizedBox(
                 width: 72,
@@ -642,7 +626,8 @@ class _BottomNav extends StatelessWidget {
                       child: GestureDetector(
                         onTap: onScan,
                         child: Container(
-                          width: 56, height: 56,
+                          width: 56,
+                          height: 56,
                           decoration: BoxDecoration(
                             color: AppColors.primary,
                             borderRadius: BorderRadius.circular(18),
@@ -670,10 +655,16 @@ class _BottomNav extends StatelessWidget {
                   ],
                 ),
               ),
-              _NavItem(icon: Icons.settings_rounded, label: 'Settings',
+              _NavItem(
+                  icon: Icons.history_rounded,
+                  label: 'History',
+                  active: active == 1,
+                  onTap: () => context.push('/history')),
+              _NavItem(
+                  icon: Icons.settings_rounded,
+                  label: 'Settings',
                   active: active == 2,
                   onTap: () => context.push('/settings')),
-              const Expanded(child: SizedBox()),
             ],
           ),
         ),
@@ -689,8 +680,10 @@ class _NavItem extends StatelessWidget {
   final VoidCallback onTap;
 
   const _NavItem({
-    required this.icon, required this.label,
-    required this.active, required this.onTap,
+    required this.icon,
+    required this.label,
+    required this.active,
+    required this.onTap,
   });
 
   @override
@@ -710,11 +703,9 @@ class _NavItem extends StatelessWidget {
             Text(label,
                 style: TextStyle(
                     fontSize: 11,
-                    fontWeight:
-                        active ? FontWeight.w600 : FontWeight.w500,
-                    color: active
-                        ? AppColors.primary
-                        : AppColors.textSecondary)),
+                    fontWeight: active ? FontWeight.w600 : FontWeight.w500,
+                    color:
+                        active ? AppColors.primary : AppColors.textSecondary)),
           ],
         ),
       ),

@@ -5,8 +5,7 @@ import '../core/services/tflite_service.dart';
 import '../core/services/connectivity_service.dart';
 import '../models/assessment_result.dart';
 
-class AssessmentNotifier
-    extends StateNotifier<AsyncValue<AssessmentResult?>> {
+class AssessmentNotifier extends StateNotifier<AsyncValue<AssessmentResult?>> {
   final Ref _ref;
 
   AssessmentNotifier(this._ref) : super(const AsyncValue.data(null));
@@ -14,13 +13,22 @@ class AssessmentNotifier
   Future<void> assess(File image) async {
     state = const AsyncValue.loading();
     try {
-      final isOnline =
-          _ref.read(connectivityProvider).valueOrNull ?? false;
-      if (isOnline) {
-        await _assessOnline(image);
-      } else {
-        await _assessOffline(image);
+      final localModelReady =
+          await _ref.read(tfliteServiceProvider).ensureLoaded();
+      final isOnline = _ref.read(connectivityProvider).valueOrNull ?? false;
+
+      if (isOnline && localModelReady) {
+        try {
+          await _assessOnline(image);
+          return;
+        } on ApiException catch (e) {
+          if (!e.isOfflineError) {
+            rethrow;
+          }
+        }
       }
+
+      await _assessOffline(image);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     }
@@ -32,8 +40,7 @@ class AssessmentNotifier
   }
 
   Future<void> _assessOffline(File image) async {
-    final raw =
-        await _ref.read(tfliteServiceProvider).classifyImage(image);
+    final raw = await _ref.read(tfliteServiceProvider).classifyImage(image);
     final result = AssessmentResult.fromJson(raw);
     state = AsyncValue.data(result);
   }
@@ -41,7 +48,7 @@ class AssessmentNotifier
   void reset() => state = const AsyncValue.data(null);
 }
 
-final assessmentProvider = StateNotifierProvider<AssessmentNotifier,
-    AsyncValue<AssessmentResult?>>(
+final assessmentProvider =
+    StateNotifierProvider<AssessmentNotifier, AsyncValue<AssessmentResult?>>(
   (ref) => AssessmentNotifier(ref),
 );

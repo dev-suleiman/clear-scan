@@ -14,6 +14,7 @@ __pycache__/
 *.tflite
 *.pb
 
+*.md
 
 # Environment secrets
 .env

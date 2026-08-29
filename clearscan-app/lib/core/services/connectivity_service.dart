@@ -2,6 +2,11 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constants/api_endpoints.dart';
+import 'api_service.dart' show backendUrlProvider;
+
+/// Debug-only "Force Offline Mode" switch in Settings.
+final forceOfflineProvider = StateProvider<bool>((ref) => false);
+
 class ConnectivityService extends AsyncNotifier<bool> {
   late final Dio _dio;
   @override
@@ -13,14 +18,16 @@ class ConnectivityService extends AsyncNotifier<bool> {
     Connectivity().onConnectivityChanged.listen((_) => refresh());
     return checkConnectivity(); }
   Future<bool> checkConnectivity() async {
+    if (ref.read(forceOfflineProvider)) return false;
     try {
       final results = await Connectivity().checkConnectivity();
       if (results.contains(ConnectivityResult.none) &&
           results.length == 1) {
         return false;
       }
+      final baseUrl = ref.read(backendUrlProvider);
       final response = await _dio
-          .get(ApiEndpoints.baseUrl + ApiEndpoints.health);
+          .get(baseUrl + ApiEndpoints.health);
       return response.statusCode == 200 &&
           (response.data['status'] == 'ok' ||
               response.data['status'] == 'online');

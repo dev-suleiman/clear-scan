@@ -4,7 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/services/api_service.dart';
 import '../core/services/clahe_service.dart';
 import '../core/services/connectivity_service.dart';
+import '../core/services/tflite_service.dart';
 import '../models/enhancement_result.dart';
+
+enum EnhancementMode { clahe, cnn, best }
 
 class EnhancementNotifier
     extends StateNotifier<AsyncValue<EnhancementResult?>> {
@@ -12,15 +15,25 @@ class EnhancementNotifier
 
   EnhancementNotifier(this._ref) : super(const AsyncValue.data(null));
 
-  Future<void> enhance(File image, {bool useBest = true}) async {
+  Future<void> enhance(File image,
+      {EnhancementMode mode = EnhancementMode.best}) async {
     state = const AsyncValue.loading();
     try {
-      final isOnline =
-          _ref.read(connectivityProvider).valueOrNull ?? false;
+      final isOnline = _ref.read(connectivityProvider).valueOrNull ?? false;
       if (isOnline) {
-        final result = useBest
-            ? await _ref.read(apiServiceProvider).compare(image)
-            : await _ref.read(apiServiceProvider).enhanceClahe(image);
+        final apiService = _ref.read(apiServiceProvider);
+        final EnhancementResult result;
+        switch (mode) {
+          case EnhancementMode.best:
+            result = await apiService.compare(image);
+            break;
+          case EnhancementMode.cnn:
+            result = await apiService.enhanceCnn(image);
+            break;
+          case EnhancementMode.clahe:
+            result = await apiService.enhanceClahe(image);
+            break;
+        }
         state = AsyncValue.data(result);
       } else {
         await _enhanceOffline(image);
@@ -35,15 +48,16 @@ class EnhancementNotifier
         await _ref.read(claheServiceProvider).enhanceImage(image);
     final bytes = await enhancedFile.readAsBytes();
 
+    final metrics = _ref.read(tfliteServiceProvider).computeReferenceMetrics(
+          image,
+          enhancedFile,
+        );
+
     final result = EnhancementResult(
       enhancedImageB64: base64Encode(bytes),
       method: 'clahe',
-      beforeMetrics: const {
-        'ssim': 0.62, 'psnr': 22.4, 'brisque': 48.1,
-      },
-      afterMetrics: const {
-        'ssim': 0.85, 'psnr': 29.5, 'brisque': 24.3,
-      },
+      beforeMetrics: {'ssim': 1.0, 'psnr': 1000.0},
+      afterMetrics: metrics,
       processingTimeMs: 0,
       winner: 'clahe',
       fallbackReason: 'offline',
@@ -54,7 +68,7 @@ class EnhancementNotifier
   void reset() => state = const AsyncValue.data(null);
 }
 
-final enhancementProvider = StateNotifierProvider<EnhancementNotifier,
-    AsyncValue<EnhancementResult?>>(
+final enhancementProvider =
+    StateNotifierProvider<EnhancementNotifier, AsyncValue<EnhancementResult?>>(
   (ref) => EnhancementNotifier(ref),
 );

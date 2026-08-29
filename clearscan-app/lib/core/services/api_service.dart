@@ -105,5 +105,11 @@ class ApiService {
       });
 }
 
-final apiServiceProvider =
-    Provider<ApiService>((ref) => ApiService());
+/// Backend base URL, seeded from [ApiEndpoints.baseUrl] and overridden at
+/// startup / from Settings with the user's persisted `backend_url` value.
+final backendUrlProvider = StateProvider<String>((ref) => ApiEndpoints.baseUrl);
+
+final apiServiceProvider = Provider<ApiService>((ref) {
+  final baseUrl = ref.watch(backendUrlProvider);
+  return ApiService(baseUrl: baseUrl);
+});
